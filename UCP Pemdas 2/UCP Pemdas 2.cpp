@@ -1,20 +1,162 @@
-// UCP Pemdas 2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <vector>
+using namespace std;
 
-int main()
-{
-    std::cout << "Hello World!\n";
+class Karyawan;
+class Perusahaan {
+public:
+	string namaPerusahaan;
+	vector<Karyawan*> daftarKaryawan;
+
+	Perusahaan(string pNamaPerusahaan) : namaPerusahaan(pNamaPerusahaan) {
+		cout << "-----------------------------------" << endl;
+		cout << "Perusahaan dibuat dengan nama :" << namaPerusahaan << endl;
+		cout << "-----------------------------------" << endl;
+	}
+
+	~Perusahaan() {
+		cout << "-----------------------------" << endl;
+		cout << "Perusahaan dimusnahkan" << endl;
+	}
+
+	void tambahKaryawan(Karyawan*);
+	void cetakKaryawan();
+};
+
+class Proyek {
+public:
+	string namaProyek;
+	vector<Karyawan*> daftarKaryawan;
+
+	Proyek(string pNama) : namaProyek(pNama) {
+		cout << "------------------------------------------" << endl;
+		cout << "Proyek dibuat dengan nama :" << namaProyek << endl;
+		cout << "------------------------------------------" << endl;
+	}
+
+	~Proyek() {
+		cout << "-------------------------------" << endl;
+		cout << "Proyek dihancurkan" << endl;
+	}
+
+	void tambahKaryawan(Karyawan*);
+	void cetakKaryawan();
+};
+
+class Karyawan {
+public:
+	string namaKaryawan;
+	vector<Proyek*> daftarProyek;
+	vector<Perusahaan*> daftarPerusahaan;
+
+	Karyawan(string pNamaKaryawan) : namaKaryawan(pNamaKaryawan) {
+		cout << "----------------------------------" << endl;
+		cout << "Nama karyawan yang terdaftar :" << namaKaryawan << endl;
+		cout << "----------------------------------" << endl;
+	}
+
+	~Karyawan() {
+		cout << "-----------------------------" << endl;
+		cout << "Karyawan dikeluarkan" << endl;
+	}
+
+	void tambahProyek(Proyek*);
+	void tambahPerusahaan(Perusahaan*);
+	void cetakProyek();
+	void cetakPerusahaan();
+};
+
+void Proyek::tambahKaryawan(Karyawan* pKaryawan) {
+	daftarKaryawan.push_back(pKaryawan);
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void Proyek::cetakKaryawan() {
+	cout << "----------------------------------------" << endl;
+	cout << "Daftar karyawan yang ada di proyek :" << this->namaProyek << ":" << endl;
+	for (auto& a : daftarKaryawan) {
+		cout << a->namaKaryawan << endl;
+	}
+	cout << "----------------------------------------" << endl;
+	cout << endl;
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+void Perusahaan::tambahKaryawan(Karyawan* pKaryawan) {
+	daftarKaryawan.push_back(pKaryawan);
+}
+
+void Perusahaan::cetakKaryawan() {
+	cout << "--------------------------------------------" << endl;
+	cout << "Nama karyawan di perusahaan :" << this->namaPerusahaan << ":" << endl;
+	for (auto& a : daftarKaryawan) {
+		cout << a->namaKaryawan << endl;
+	}
+	cout << "----------------------------------------" << endl;
+	cout << endl;
+}
+
+void Karyawan::tambahProyek(Proyek* pProyek) {
+	daftarProyek.push_back(pProyek);
+}
+
+void Karyawan::cetakProyek() {
+	cout << "--------------------------------------------" << endl;
+	cout << "Daftar proyek dengan atas nama :" << this->namaKaryawan << ":" << endl;
+	for (auto& a : daftarProyek) {
+		cout << a->namaProyek << endl;
+	}
+	cout << "--------------------------------------------" << endl;
+	cout << endl;
+}
+
+void Karyawan::tambahPerusahaan(Perusahaan* pPerusahaan) {
+	daftarPerusahaan.push_back(pPerusahaan);
+}
+
+void Karyawan::cetakPerusahaan() {
+	cout << "------------------------------------------------" << endl;
+	cout << "Daftar karyawan yang ada di PT.Maju Mundur :" << this->namaKaryawan << ":" << endl;
+	for (auto& a : daftarPerusahaan) {
+		cout << a->namaPerusahaan << endl;
+	}
+	cout << "------------------------------------------------" << endl;
+	cout << endl;
+}
+
+int main() {
+	Perusahaan* varPerusahaan1 = new Perusahaan("PT.Maju Mundur");
+	Proyek* varProyek1 = new Proyek("Sistem Keamanan");
+	Proyek* varProyek2 = new Proyek("Sistem Informasi");
+	Karyawan* varKaryawan1 = new Karyawan("Budi");
+	Karyawan* varKaryawan2 = new Karyawan("Andi");
+	Karyawan* varKaryawan3 = new Karyawan("Rafi");
+
+	varPerusahaan1->tambahKaryawan(varKaryawan1);
+	varPerusahaan1->tambahKaryawan(varKaryawan2);
+	varPerusahaan1->tambahKaryawan(varKaryawan3);
+
+	varProyek1->tambahKaryawan(varKaryawan1);
+	varProyek1->tambahKaryawan(varKaryawan3);
+	varProyek2->tambahKaryawan(varKaryawan1);
+	varProyek2->tambahKaryawan(varKaryawan2);
+
+	varKaryawan1->tambahProyek(varProyek1);
+	varKaryawan1->tambahProyek(varProyek2);
+	varKaryawan2->tambahProyek(varProyek2);
+	varKaryawan3->tambahProyek(varProyek1);
+
+	varPerusahaan1->cetakKaryawan();
+	varProyek1->cetakKaryawan();
+	varProyek2->cetakKaryawan();
+	varKaryawan1->cetakPerusahaan();
+	varKaryawan2->cetakPerusahaan();
+	varKaryawan1->cetakProyek();
+	varKaryawan2->cetakProyek();
+	varKaryawan3->cetakProyek();
+
+	delete varPerusahaan1;
+	delete varProyek1;
+	delete varProyek2;
+	delete varKaryawan1;
+	delete varKaryawan2;
+	delete varKaryawan3;
+}
